@@ -11,11 +11,10 @@ func ListToArray[T any](list *list.List) []T {
 }
 
 func ArrayDeleteElement[T comparable](array []T, x T) []T {
-	var i int
-	for i = 0; i < len(array); i++ {
+	for i := 0; i < len(array); i++ {
 		if array[i] == x {
-			break
+			return append(array[:i], array[i+1:]...)
 		}
 	}
-	return append(array[:i], array[i+1:]...)
+	return array
 }

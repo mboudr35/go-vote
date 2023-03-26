@@ -1,4 +1,4 @@
-module github.com/mbd98/go-vote/v1
+module github.com/mbd98/go-vote/lib/v1
 
 go 1.20
 

@@ -1,8 +1,8 @@
 package methods
 
 import (
-	"github.com/mbd98/go-vote/v1/lib/graph"
-	"github.com/mbd98/go-vote/v1/lib/primitives"
+	"github.com/mbd98/go-vote/lib/v1/graph"
+	"github.com/mbd98/go-vote/lib/v1/primitives"
 )
 
 func Schulze(g graph.Graph, margin bool) (graph.Graph, map[primitives.Alternative]bool, map[primitives.Alternative]map[primitives.Alternative]bool) {

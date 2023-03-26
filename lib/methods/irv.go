@@ -1,8 +1,8 @@
 package methods
 
 import (
-	"github.com/mbd98/go-vote/v1/lib/primitives"
-	"github.com/mbd98/go-vote/v1/lib/util"
+	"github.com/mbd98/go-vote/lib/v1/primitives"
+	"github.com/mbd98/go-vote/lib/v1/util"
 	"math"
 )
 
@@ -11,7 +11,6 @@ func eliminateAlt(eliminate primitives.Alternative, alts []primitives.Alternativ
 	for i, ballot := range ballots {
 		newBallots[i] = make(primitives.PreferentialBallot, len(alts))
 		r := ballot[eliminate]
-		//delete(ballot, eliminate)
 		for alt, rank := range ballot {
 			if alt != eliminate {
 				if rank > r {
@@ -40,14 +39,15 @@ func InstantRunoff(alts []primitives.Alternative, ballots []primitives.Preferent
 	var fewestAlt primitives.Alternative
 	fewestCount := math.MaxInt
 
-	// Anyone have a majority?
-	for alt, votes := range allocation {
-		if 2*votes > len(ballots) {
+	for alt, alloc := range allocation {
+		// Anyone have a majority?
+		if 2*alloc > len(ballots) {
 			// We have a winner!
 			return alt
 		}
-		if fewestCount > votes {
-			fewestCount = votes
+		// Find the biggest loser
+		if fewestCount > alloc {
+			fewestCount = alloc
 			fewestAlt = alt
 		}
 	}
