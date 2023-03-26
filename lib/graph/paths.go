@@ -2,8 +2,8 @@ package graph
 
 import (
 	"container/list"
-	"github.com/mbd98/go-vote/lib/v1/primitives"
-	"github.com/mbd98/go-vote/lib/v1/util"
+	"github.com/mbd98/go-vote/lib/primitives"
+	"github.com/mbd98/go-vote/lib/util"
 )
 
 func (g Graph) CanReach(target, start primitives.Alternative) bool {

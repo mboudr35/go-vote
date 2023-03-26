@@ -2,7 +2,7 @@ package graph
 
 import (
 	"fmt"
-	"github.com/mbd98/go-vote/lib/v1/primitives"
+	"github.com/mbd98/go-vote/lib/primitives"
 	"strings"
 )
 

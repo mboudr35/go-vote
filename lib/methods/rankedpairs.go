@@ -1,9 +1,9 @@
 package methods
 
 import (
-	"github.com/mbd98/go-vote/lib/v1/graph"
-	"github.com/mbd98/go-vote/lib/v1/primitives"
-	"github.com/mbd98/go-vote/lib/v1/util"
+	"github.com/mbd98/go-vote/lib/graph"
+	"github.com/mbd98/go-vote/lib/primitives"
+	"github.com/mbd98/go-vote/lib/util"
 	"sort"
 )
 

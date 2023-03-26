@@ -3,14 +3,14 @@ package graph
 import (
 	"container/list"
 	"fmt"
-	"github.com/mbd98/go-vote/lib/v1/primitives"
-	"github.com/mbd98/go-vote/lib/v1/util"
+	"github.com/mbd98/go-vote/lib/primitives"
+	"github.com/mbd98/go-vote/lib/util"
 )
 
 const (
-	MARKER_NONE = 0
-	MARKER_TEMP = 1
-	MARKER_PERM = 2
+	MarkerNone = 0
+	MarkerTemp = 1
+	MarkerPerm = 2
 )
 
 func (g Graph) FindSources() []primitives.Alternative {
@@ -29,8 +29,8 @@ vIter:
 
 func (g Graph) tsVisit(v primitives.Alternative, marker map[primitives.Alternative]uint8, sorted *list.List) error {
 	switch marker[v] {
-	case MARKER_NONE:
-		marker[v] = MARKER_TEMP
+	case MarkerNone:
+		marker[v] = MarkerTemp
 		for _, w := range g.Vertices {
 			if g.Edges[v][w] != 0 {
 				if err := g.tsVisit(w, marker, sorted); err != nil {
@@ -38,12 +38,12 @@ func (g Graph) tsVisit(v primitives.Alternative, marker map[primitives.Alternati
 				}
 			}
 		}
-		marker[v] = MARKER_PERM
+		marker[v] = MarkerPerm
 		sorted.PushFront(v)
 		return nil
-	case MARKER_TEMP:
+	case MarkerTemp:
 		return fmt.Errorf("TopSort: Graph contains cycle")
-	case MARKER_PERM:
+	case MarkerPerm:
 		return nil
 	default:
 		return fmt.Errorf("TopSort: Illegal marker %d", marker[v])
@@ -60,7 +60,7 @@ func (g Graph) TopSort() ([]primitives.Alternative, error) {
 		}
 	}
 	for _, v := range g.Vertices {
-		if marker[v] != MARKER_PERM {
+		if marker[v] != MarkerPerm {
 			if err := g.tsVisit(v, marker, sorted); err != nil {
 				return nil, err
 			}
