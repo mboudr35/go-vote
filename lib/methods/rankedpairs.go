@@ -1,12 +1,10 @@
 package methods
 
 import (
-	"fmt"
 	"github.com/mbd98/go-vote/v1/lib/graph"
 	"github.com/mbd98/go-vote/v1/lib/primitives"
 	"github.com/mbd98/go-vote/v1/lib/util"
 	"sort"
-	"strings"
 )
 
 type rankedAltPair struct {
@@ -14,7 +12,7 @@ type rankedAltPair struct {
 	weight int
 }
 
-func RankedPairs(g graph.Graph, margin bool) (graph.Graph, string) {
+func RankedPairs(g graph.Graph, margin bool) (graph.Graph, []primitives.Alternative, error) {
 	pairs := make([]rankedAltPair, 0, util.Binomial(len(g.Vertices), 2))
 	for _, a := range g.Vertices {
 		for _, b := range g.Vertices {
@@ -37,34 +35,20 @@ func RankedPairs(g graph.Graph, margin bool) (graph.Graph, string) {
 		return pairs[i].weight > pairs[j].weight
 	}
 	sort.Slice(pairs, less)
-	domg := graph.NewEmptyGraph(g.Vertices)
+	dom := graph.NewEmptyGraph(g.Vertices)
 	for _, pair := range pairs {
-		domg.Edges[pair.A][pair.B] = pair.weight
-		if domg.CanReach(pair.A, pair.B) {
+		dom.Edges[pair.A][pair.B] = pair.weight
+		if dom.CanReach(pair.A, pair.B) {
 			// We have a cycle, skip this one
-			domg.Edges[pair.A][pair.B] = 0
+			dom.Edges[pair.A][pair.B] = 0
 			pair.weight = 0
 		}
 	}
 	sort.Slice(pairs, less)
-	var ineq strings.Builder
-	insert := func(pair rankedAltPair) {
-		ineq.WriteByte('(')
-		ineq.WriteString(fmt.Sprint(pair.A))
-		ineq.WriteString(" > ")
-		ineq.WriteString(fmt.Sprint(pair.B))
-		ineq.WriteByte(')')
-	}
-	for _, pair := range pairs[0 : len(pairs)-1] {
-		if pair.weight != 0 {
-			insert(pair)
-			ineq.WriteString(" ∧ ")
-		}
-	}
-	if pairs[len(pairs)-1].weight != 0 {
-		insert(pairs[len(pairs)-1])
-	}
 
-	return domg, ineq.String()
-	// TODO: combine the inequalities - maybe use an expression library?
+	ts, err := dom.TopSort()
+	if err != nil {
+		return graph.Graph{}, nil, err
+	}
+	return dom, ts, nil
 }
