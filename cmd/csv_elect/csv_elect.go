@@ -5,21 +5,31 @@ import (
 	"flag"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/mbd98/go-vote/lib/v1/graph"
-	"github.com/mbd98/go-vote/lib/v1/methods"
-	"github.com/mbd98/go-vote/lib/v1/primitives"
+	"github.com/mbd98/go-vote/lib/graph"
+	"github.com/mbd98/go-vote/lib/methods"
+	"github.com/mbd98/go-vote/lib/primitives"
 	"log"
 	"os"
 	"strconv"
 )
 
-var schulze = flag.Bool("schulze", false, "use the Schulze method")
-var rankedpairs = flag.Bool("rankedpairs", false, "use the Ranked Pairs method")
+var schulze = flag.Bool("schulze", false, "use the Schulze Condorcet method")
+var rankedpairs = flag.Bool("rankedpairs", false, "use the Ranked Pairs Condorcet method")
 var irv = flag.Bool("irv", false, "use the Instant-Runoff method")
-var margin = flag.Bool("margin", false, "use margins in calculations")
+var margin = flag.Bool("margin", false, "use margins in Condorcet calculations instead of winnings")
+var help = flag.Bool("help", false, "get help")
 
 func main() {
 	flag.Parse()
+	if *help {
+		fmt.Fprintln(os.Stderr, "usage: $ csv_elect [flags] < [input.csv]")
+		fmt.Fprintln(os.Stderr, "Determine the results of an election from ballots in a CSV file")
+		fmt.Fprintln(os.Stderr, "The CSV file header should list the names of the alternatives")
+		fmt.Fprintln(os.Stderr, "Each subsequent row corresponds to the rankings of the corresponding column of the ballot")
+		fmt.Fprintln(os.Stderr, "Flags:")
+		flag.PrintDefaults()
+		return
+	}
 	csvIn := csv.NewReader(os.Stdin)
 	header, err := csvIn.Read()
 	if err != nil {
@@ -48,14 +58,13 @@ func main() {
 		}
 	}
 	election := graph.NewElectionGraph(alts, prefs)
-	if *margin {
-		fmt.Println("Election in margin mode")
-	} else {
-		fmt.Println("Election in winnings mode")
-	}
 	if *schulze {
 		strength, winner, dom := methods.Schulze(election, *margin)
-		fmt.Println("\nSchulze results:")
+		if *margin {
+			fmt.Println("\n Schulze margin results:")
+		} else {
+			fmt.Println("\n Schulze winning results:")
+		}
 		fmt.Println("Path strength matrix:")
 		fmt.Print(strength.PrettyString())
 		fmt.Print("Winners: ")
@@ -67,7 +76,11 @@ func main() {
 		fmt.Printf("\nDominance: %v\n", dom)
 	}
 	if *rankedpairs {
-		fmt.Println("\nRanked pairs results:")
+		if *margin {
+			fmt.Println("\n Ranked pairs margin results:")
+		} else {
+			fmt.Println("\n Ranked pairs winning results:")
+		}
 		dom, order, err := methods.RankedPairs(election, *margin)
 		if err != nil {
 			log.Fatalln(err)
