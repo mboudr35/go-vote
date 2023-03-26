@@ -47,6 +47,11 @@ func main() {
 		}
 	}
 	election := graph.NewElectionGraph(alts, prefs)
+	if *margin {
+		fmt.Println("Election in margin mode")
+	} else {
+		fmt.Println("Election in winnings mode")
+	}
 	if *schulze {
 		strength, winner, dom := methods.Schulze(election, *margin)
 		fmt.Println("\nSchulze results:")
