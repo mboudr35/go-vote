@@ -30,6 +30,9 @@ func main() {
 	}
 	alts := make([]primitives.Alternative, len(header))
 	prefs := make([]primitives.PreferentialBallot, len(body))
+	for j := 0; j < len(body); j++ {
+		prefs[j] = make(primitives.PreferentialBallot, len(alts))
+	}
 	for i, h := range header {
 		alts[i] = primitives.Alternative{
 			Id:   uuid.New(),
@@ -46,18 +49,25 @@ func main() {
 	election := graph.NewElectionGraph(alts, prefs)
 	if *schulze {
 		strength, winner, dom := methods.Schulze(election, *margin)
-		fmt.Println("Schulze results:")
+		fmt.Println("\nSchulze results:")
 		fmt.Println("Path strength matrix:")
 		fmt.Print(strength.PrettyString())
-		fmt.Println("Winners:")
+		fmt.Print("Winners: ")
 		for alt, win := range winner {
 			if win {
-				fmt.Printf("- %v\n", alt)
+				fmt.Printf("{%v} ", alt)
 			}
 		}
-		fmt.Printf("Dominance: %v\n", dom)
+		fmt.Printf("\nDominance: %v\n", dom)
 	}
 	if *rankedpairs {
-
+		fmt.Println("\nRanked pairs results:")
+		dom, order, err := methods.RankedPairs(election, *margin)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		fmt.Println("Dominance matrix:")
+		fmt.Print(dom.PrettyString())
+		fmt.Printf("Topological order: %v\n", order)
 	}
 }
