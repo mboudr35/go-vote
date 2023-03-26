@@ -15,6 +15,7 @@ import (
 
 var schulze = flag.Bool("schulze", false, "use the Schulze method")
 var rankedpairs = flag.Bool("rankedpairs", false, "use the Ranked Pairs method")
+var irv = flag.Bool("irv", false, "use the Instant-Runoff method")
 var margin = flag.Bool("margin", false, "use margins in calculations")
 
 func main() {
@@ -74,5 +75,9 @@ func main() {
 		fmt.Println("Dominance matrix:")
 		fmt.Print(dom.PrettyString())
 		fmt.Printf("Topological order: %v\n", order)
+	}
+	if *irv {
+		fmt.Println("\nInstant-Runoff results:")
+		fmt.Printf("Winner: %v\n", methods.InstantRunoff(alts, prefs))
 	}
 }
