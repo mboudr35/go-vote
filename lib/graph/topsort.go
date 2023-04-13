@@ -3,8 +3,9 @@ package graph
 import (
 	"container/list"
 	"fmt"
-	"github.com/mbd98/go-vote/lib/primitives"
-	"github.com/mbd98/go-vote/lib/util"
+
+	"github.com/mboudr35/go-vote/lib/primitives"
+	"github.com/mboudr35/go-vote/lib/util"
 )
 
 const (

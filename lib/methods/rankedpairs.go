@@ -1,10 +1,11 @@
 package methods
 
 import (
-	"github.com/mbd98/go-vote/lib/graph"
-	"github.com/mbd98/go-vote/lib/primitives"
-	"github.com/mbd98/go-vote/lib/util"
 	"sort"
+
+	"github.com/mboudr35/go-vote/lib/graph"
+	"github.com/mboudr35/go-vote/lib/primitives"
+	"github.com/mboudr35/go-vote/lib/util"
 )
 
 type rankedAltPair struct {

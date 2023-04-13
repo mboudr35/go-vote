@@ -2,8 +2,9 @@ package graph
 
 import (
 	"fmt"
-	"github.com/mbd98/go-vote/lib/primitives"
 	"strings"
+
+	"github.com/mboudr35/go-vote/lib/primitives"
 )
 
 type Graph struct {

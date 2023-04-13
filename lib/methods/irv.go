@@ -1,9 +1,10 @@
 package methods
 
 import (
-	"github.com/mbd98/go-vote/lib/primitives"
-	"github.com/mbd98/go-vote/lib/util"
 	"math"
+
+	"github.com/mboudr35/go-vote/lib/primitives"
+	"github.com/mboudr35/go-vote/lib/util"
 )
 
 func eliminateAlt(eliminate primitives.Alternative, alts []primitives.Alternative, ballots []primitives.PreferentialBallot) ([]primitives.Alternative, []primitives.PreferentialBallot) {

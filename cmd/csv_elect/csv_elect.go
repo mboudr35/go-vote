@@ -4,13 +4,14 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/mbd98/go-vote/lib/graph"
-	"github.com/mbd98/go-vote/lib/methods"
-	"github.com/mbd98/go-vote/lib/primitives"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/google/uuid"
+	"github.com/mboudr35/go-vote/lib/graph"
+	"github.com/mboudr35/go-vote/lib/methods"
+	"github.com/mboudr35/go-vote/lib/primitives"
 )
 
 var schulze = flag.Bool("schulze", false, "use the Schulze Condorcet method")

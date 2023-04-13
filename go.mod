@@ -1,7 +1,5 @@
-module github.com/mbd98/go-vote
+module github.com/mboudr35/go-vote
 
 go 1.20
 
-replace (
-	github.com/mbd98/go-vote/lib => ./lib
-)
+replace github.com/mboudr35/go-vote/lib => ./lib
